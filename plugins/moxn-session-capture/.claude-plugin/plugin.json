@@ -1,0 +1,13 @@
+{
+  "name": "moxn-session-capture",
+  "description": "Moxn for your coding agent: capture sessions into Moxn (lifecycle hooks) AND read/search your Moxn knowledge base + past sessions via MCP.",
+  "version": "0.2.0",
+  "author": { "name": "Moxn", "url": "https://moxn.dev" },
+  "homepage": "https://moxn.dev",
+  "mcpServers": {
+    "moxn": {
+      "type": "http",
+      "url": "https://moxn.dev/api/mcp/http"
+    }
+  }
+}

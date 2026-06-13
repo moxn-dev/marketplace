@@ -1,0 +1,12 @@
+{
+  "name": "moxn",
+  "owner": { "name": "Moxn", "url": "https://moxn.dev" },
+  "metadata": { "description": "Official Moxn plugins for coding agents." },
+  "plugins": [
+    {
+      "name": "moxn-session-capture",
+      "source": "./plugins/moxn-session-capture",
+      "description": "Capture your coding-agent sessions into Moxn, and read/search your Moxn knowledge base + past sessions via MCP."
+    }
+  ]
+}
