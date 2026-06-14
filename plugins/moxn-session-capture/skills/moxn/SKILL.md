@@ -41,9 +41,15 @@ If a PR can't be resolved (the GitHub App isn't connected), pass `branch` direct
 `sessions find { filePath: "src/lib/foo.ts" }` → read the decision-record of the session
 that last shaped it.
 
-## Auth & setup (one-time)
+## Workspace scope & auth
 
-- **Reads (this MCP server)** authenticate via **OAuth** — Claude Code prompts you to
-  authorize Moxn once, then caches the token. No API key to paste.
+- **One connection = one workspace.** This plugin's `moxn` MCP server is hard-scoped to a
+  single Moxn workspace (the `workspace` you set at install → `<workspace>.moxn.dev`). The
+  server enforces it: every call is checked against your membership in that one workspace, so
+  a connection can never read or write another workspace's content.
+- **Reads** authenticate via **OAuth** — Claude Code prompts you to authorize Moxn once, then
+  caches the token. No API key to paste.
+- **To work in a second workspace**, add a second, independent connection (and authorize it
+  separately): `claude mcp add moxn-<other> --transport http https://<other>.moxn.dev/api/mcp/http`.
 - **Session-capture hooks** (the background writes) use a scoped, revocable key in
   `~/.moxn/agent.json`; configure it once per the plugin README. Nothing is stored in the repo.

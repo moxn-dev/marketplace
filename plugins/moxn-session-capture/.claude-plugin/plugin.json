@@ -1,13 +1,21 @@
 {
   "name": "moxn-session-capture",
-  "description": "Moxn for your coding agent: capture sessions into Moxn (lifecycle hooks) AND read/search your Moxn knowledge base + past sessions via MCP.",
-  "version": "0.2.0",
+  "description": "Moxn for your coding agent: capture sessions into Moxn (lifecycle hooks) AND read/search your Moxn knowledge base + past sessions via MCP — scoped to one workspace.",
+  "version": "0.3.0",
   "author": { "name": "Moxn", "url": "https://moxn.dev" },
   "homepage": "https://moxn.dev",
+  "userConfig": {
+    "workspace": {
+      "type": "string",
+      "title": "Workspace",
+      "description": "Your Moxn workspace subdomain — the part before .moxn.dev (e.g. 'acme' for acme.moxn.dev). This connection is hard-scoped to this one workspace.",
+      "required": true
+    }
+  },
   "mcpServers": {
     "moxn": {
       "type": "http",
-      "url": "https://moxn.dev/api/mcp/http"
+      "url": "https://${user_config.workspace}.moxn.dev/api/mcp/http"
     }
   }
 }
