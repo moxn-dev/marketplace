@@ -21,32 +21,36 @@ runtime, only `node` on PATH.
 
 ## Setup
 
-Two one-time steps.
-
-**1. Workspace (for the MCP).** Set your Moxn workspace subdomain when you enable
-the plugin — the `/plugin` UI prompts for `workspace`, or pass it on install:
+Everything is configured **at install** — the `/plugin` UI prompts for the fields
+below (or pass them with `--config`), then authorize the MCP once via `/mcp`:
 
 ```bash
-claude plugin install moxn-session-capture@moxn --config workspace=acme
+claude plugin install moxn-session-capture@moxn \
+  --config workspace=acme \
+  --config api_key=<your moxn api key for that workspace>
 ```
 
-The `moxn` MCP server then connects to `https://<workspace>.moxn.dev/api/mcp/http`,
-**hard-scoped to that one workspace** (membership-enforced server-side). Authorize
-it once via `/mcp`. To work in a second workspace, add an independent connection:
+- **`workspace`** (required) → the `moxn` MCP connects to
+  `https://<workspace>.moxn.dev/api/mcp/http`, **hard-scoped to that one workspace**
+  (membership-enforced server-side). Authorize it once via `/mcp` — OAuth, no key
+  needed for reads. To work in a second workspace, add an independent connection:
+  `claude mcp add moxn-other --transport http https://<other>.moxn.dev/api/mcp/http`.
+- **`api_key`** (optional, stored in your OS keychain) → the background capture
+  hooks use it to sync your sessions. Without it the hooks spool locally (durable,
+  recovered by a later drain) and skip syncing. Get one at `moxn.dev/settings/api-keys`.
 
-```bash
-claude mcp add moxn-other --transport http https://<other>.moxn.dev/api/mcp/http
-```
+### Alternative: file-based key (settings-hook installs)
 
-**2. Capture key (for the hooks).** Write `~/.moxn/agent.json` once:
+If you wire the hooks via `settings.json` rather than the marketplace plugin,
+configure the key in a file instead of the install prompt:
 
 ```bash
 node dist/setup.cjs --api-key=<moxn api key> --base-url=https://moxn.dev
 ```
 
-`--base-url` defaults to `https://moxn.dev`. Without a configured key the hooks
-still spool session records locally (durable, recovered by a later drain) but
-skip syncing.
+The hooks resolve config in precedence order: plugin `api_key`
+(`CLAUDE_PLUGIN_OPTION_API_KEY`) → `~/.moxn/agent.json` → `MOXN_API_KEY` /
+`MOXN_BASE_URL` env. Base URL defaults to `https://moxn.dev`.
 
 ## Local test
 

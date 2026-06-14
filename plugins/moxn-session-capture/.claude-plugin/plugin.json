@@ -1,7 +1,7 @@
 {
   "name": "moxn-session-capture",
   "description": "Moxn for your coding agent: capture sessions into Moxn (lifecycle hooks) AND read/search your Moxn knowledge base + past sessions via MCP — scoped to one workspace.",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "author": { "name": "Moxn", "url": "https://moxn.dev" },
   "homepage": "https://moxn.dev",
   "userConfig": {
@@ -10,6 +10,12 @@
       "title": "Workspace",
       "description": "Your Moxn workspace subdomain — the part before .moxn.dev (e.g. 'acme' for acme.moxn.dev). This connection is hard-scoped to this one workspace.",
       "required": true
+    },
+    "api_key": {
+      "type": "string",
+      "title": "API key (session capture)",
+      "description": "A Moxn API key for this workspace (moxn.dev/settings/api-keys). Used by the background capture hooks to sync your sessions. Optional — without it the hooks spool locally and skip syncing. The MCP reads/search use OAuth, not this key.",
+      "sensitive": true
     }
   },
   "mcpServers": {

@@ -2,9 +2,8 @@
 "use strict";
 
 // src/drain.ts
-var import_node_fs4 = require("node:fs");
-var import_node_path4 = require("node:path");
-var import_node_os = require("node:os");
+var import_node_path5 = require("node:path");
+var import_node_os2 = require("node:os");
 
 // ../../src/lib/sessions/sync.ts
 var import_node_fs = require("node:fs");
@@ -622,18 +621,33 @@ function spoolFromPayload(stdin, deps) {
   return { sessionId, transcriptPath, event };
 }
 
-// src/drain.ts
+// src/config.ts
+var import_node_fs4 = require("node:fs");
+var import_node_os = require("node:os");
+var import_node_path4 = require("node:path");
+var DEFAULT_BASE_URL = "https://moxn.dev";
 function config() {
-  try {
-    return JSON.parse((0, import_node_fs4.readFileSync)((0, import_node_path4.join)((0, import_node_os.homedir)(), ".moxn", "agent.json"), "utf-8"));
-  } catch {
-    return {
-      apiKey: process.env.MOXN_API_KEY,
-      baseUrl: process.env.MOXN_BASE_URL ?? "http://localhost:3001"
-    };
+  const pluginKey = process.env.CLAUDE_PLUGIN_OPTION_API_KEY;
+  if (pluginKey) {
+    return { apiKey: pluginKey, baseUrl: process.env.MOXN_BASE_URL ?? DEFAULT_BASE_URL };
   }
+  try {
+    const fromFile = JSON.parse(
+      (0, import_node_fs4.readFileSync)((0, import_node_path4.join)((0, import_node_os.homedir)(), ".moxn", "agent.json"), "utf-8")
+    );
+    if (fromFile.apiKey) {
+      return { apiKey: fromFile.apiKey, baseUrl: fromFile.baseUrl ?? DEFAULT_BASE_URL };
+    }
+  } catch {
+  }
+  return {
+    apiKey: process.env.MOXN_API_KEY,
+    baseUrl: process.env.MOXN_BASE_URL ?? DEFAULT_BASE_URL
+  };
 }
-var SPOOL = process.env.MOXN_SESSIONS_SPOOL_DIR ?? (0, import_node_path4.join)((0, import_node_os.homedir)(), ".moxn", "sessions-spool");
+
+// src/drain.ts
+var SPOOL = process.env.MOXN_SESSIONS_SPOOL_DIR ?? (0, import_node_path5.join)((0, import_node_os2.homedir)(), ".moxn", "sessions-spool");
 function readStdin() {
   return new Promise((resolve) => {
     let d = "";

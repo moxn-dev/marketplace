@@ -51,5 +51,6 @@ that last shaped it.
   caches the token. No API key to paste.
 - **To work in a second workspace**, add a second, independent connection (and authorize it
   separately): `claude mcp add moxn-<other> --transport http https://<other>.moxn.dev/api/mcp/http`.
-- **Session-capture hooks** (the background writes) use a scoped, revocable key in
-  `~/.moxn/agent.json`; configure it once per the plugin README. Nothing is stored in the repo.
+- **Session-capture hooks** (the background writes) use a scoped, revocable API key set at
+  install (the `api_key` config field, stored in your OS keychain) — or `~/.moxn/agent.json`
+  for settings-hook installs. Nothing is stored in the repo.
