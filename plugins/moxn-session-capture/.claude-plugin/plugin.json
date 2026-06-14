@@ -1,10 +1,16 @@
 {
   "name": "moxn-session-capture",
   "description": "Moxn for your coding agent: capture sessions into Moxn (lifecycle hooks) AND read/search your Moxn knowledge base + past sessions via MCP — scoped to one workspace.",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "author": { "name": "Moxn", "url": "https://moxn.dev" },
   "homepage": "https://moxn.dev",
   "userConfig": {
+    "capture_enabled": {
+      "type": "boolean",
+      "title": "Enable session capture",
+      "description": "Master switch for the background capture hooks. When off, NOTHING is captured — no local spooling and no network sync (independent of any API key). Leave on to capture; pair with an API key to sync. Reads/search via the MCP are unaffected.",
+      "default": true
+    },
     "workspace": {
       "type": "string",
       "title": "Workspace",

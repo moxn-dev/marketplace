@@ -52,6 +52,24 @@ The hooks resolve config in precedence order: plugin `api_key`
 (`CLAUDE_PLUGIN_OPTION_API_KEY`) → `~/.moxn/agent.json` → `MOXN_API_KEY` /
 `MOXN_BASE_URL` env. Base URL defaults to `https://moxn.dev`.
 
+## Privacy & disabling capture
+
+Capture is opt-in for network sync and fully toggleable:
+
+- **No API key → nothing is transmitted.** The hooks never make a network call
+  without a configured key (`if (!apiKey) return` precedes every request). Without
+  a key they write only a small local *pointer* record (session id + the path to
+  Claude Code's own transcript) to `~/.moxn/sessions-spool` — never a copy of your
+  session, never sent.
+- **`capture_enabled: false` → nothing at all.** Set it (the install prompt, or
+  `MOXN_CAPTURE_ENABLED=false`) and the hooks no-op entirely — no local spooling,
+  no sync — independent of any key.
+- The **MCP** (reads/search) never transmits your session logs; it's read-only and
+  authenticates with OAuth, not the capture key.
+
+So for zero capture, set `capture_enabled` off (or simply never configure a key —
+that already guarantees nothing leaves the machine). Reads still work either way.
+
 ## Local test
 
 ```bash

@@ -5,7 +5,7 @@ import { drainSpool } from '../../../src/lib/sessions/drain';
 import { spoolFromPayload } from '../../../src/lib/sessions/hook';
 import { markSynced } from '../../../src/lib/sessions/spool';
 import { syncTranscript } from '../../../src/lib/sessions/sync';
-import { config } from './config';
+import { config, captureEnabled } from './config';
 const SPOOL =
   process.env.MOXN_SESSIONS_SPOOL_DIR ?? join(homedir(), '.moxn', 'sessions-spool');
 
@@ -23,6 +23,7 @@ function readStdin(): Promise<string> {
 }
 
 async function main() {
+  if (!captureEnabled()) return; // capture disabled — no spool, no drain, no sync
   // 1) REGISTER the current session (SessionStart payload): spool it so a later
   //    crash leaves a stale record the next session's drain reconciles, and
   //    sync its start state immediately (status=active — visible at start).

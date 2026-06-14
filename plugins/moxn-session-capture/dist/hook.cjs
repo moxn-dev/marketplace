@@ -65,9 +65,16 @@ function spoolFromPayload(stdin, deps) {
   return { sessionId, transcriptPath, event };
 }
 
+// src/config.ts
+function captureEnabled() {
+  const v = (process.env.CLAUDE_PLUGIN_OPTION_CAPTURE_ENABLED ?? process.env.MOXN_CAPTURE_ENABLED ?? "").trim().toLowerCase();
+  return !(v === "false" || v === "off" || v === "0" || v === "no");
+}
+
 // src/hook.ts
 var SPOOL = process.env.MOXN_SESSIONS_SPOOL_DIR ?? (0, import_node_path3.join)((0, import_node_os.homedir)(), ".moxn", "sessions-spool");
 async function main() {
+  if (!captureEnabled()) process.exit(0);
   const stdin = await new Promise((resolve) => {
     let d = "";
     process.stdin.on("data", (c) => d += c);

@@ -546,7 +546,10 @@ var DEFAULT_BASE_URL = "https://moxn.dev";
 function config() {
   const pluginKey = process.env.CLAUDE_PLUGIN_OPTION_API_KEY;
   if (pluginKey) {
-    return { apiKey: pluginKey, baseUrl: process.env.MOXN_BASE_URL ?? DEFAULT_BASE_URL };
+    return {
+      apiKey: pluginKey,
+      baseUrl: process.env.MOXN_BASE_URL ?? DEFAULT_BASE_URL
+    };
   }
   try {
     const fromFile = JSON.parse(

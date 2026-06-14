@@ -3,11 +3,13 @@ import { spawn } from 'node:child_process';
 import { join } from 'node:path';
 import { homedir } from 'node:os';
 import { spoolFromPayload } from '../../../src/lib/sessions/hook';
+import { captureEnabled } from './config';
 
 const SPOOL =
   process.env.MOXN_SESSIONS_SPOOL_DIR ?? join(homedir(), '.moxn', 'sessions-spool');
 
 async function main() {
+  if (!captureEnabled()) process.exit(0); // capture disabled — no spool, no sync
   const stdin = await new Promise<string>((resolve) => {
     let d = '';
     process.stdin.on('data', (c) => (d += c));

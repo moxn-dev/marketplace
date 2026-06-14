@@ -626,10 +626,17 @@ var import_node_fs4 = require("node:fs");
 var import_node_os = require("node:os");
 var import_node_path4 = require("node:path");
 var DEFAULT_BASE_URL = "https://moxn.dev";
+function captureEnabled() {
+  const v = (process.env.CLAUDE_PLUGIN_OPTION_CAPTURE_ENABLED ?? process.env.MOXN_CAPTURE_ENABLED ?? "").trim().toLowerCase();
+  return !(v === "false" || v === "off" || v === "0" || v === "no");
+}
 function config() {
   const pluginKey = process.env.CLAUDE_PLUGIN_OPTION_API_KEY;
   if (pluginKey) {
-    return { apiKey: pluginKey, baseUrl: process.env.MOXN_BASE_URL ?? DEFAULT_BASE_URL };
+    return {
+      apiKey: pluginKey,
+      baseUrl: process.env.MOXN_BASE_URL ?? DEFAULT_BASE_URL
+    };
   }
   try {
     const fromFile = JSON.parse(
@@ -660,6 +667,7 @@ function readStdin() {
   });
 }
 async function main() {
+  if (!captureEnabled()) return;
   const stdin = await readStdin();
   const self = stdin.trim() ? spoolFromPayload(stdin, {
     spoolDir: SPOOL,
